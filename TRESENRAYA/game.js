@@ -463,7 +463,7 @@ class GameManager {
                 roomId: roomId,
                 board: ['', '', '', '', '', '', '', '', ''],
                 turn: 'X',
-                player1: window.currentUser.uid,
+                player1: window.currentUser ? window.currentUser.uid : null,
                 player2: null,
                 player1Symbol: 'X',
                 player2Symbol: 'O',
@@ -1618,21 +1618,34 @@ class GameManager {
             const roomRef = doc(db, 'rooms', roomId);
 
             // Obtener datos del jugador 1 de Firestore
-            const playerSnap = await getDoc(doc(db, 'players', window.currentUser.uid));
-            const playerData = playerSnap.exists() ? playerSnap.data() : {};
+            let playerData = {};
+            let playerName = 'Jugador 1';
+            if (window.currentUser) {
+                try {
+                    const playerSnap = await getDoc(doc(db, 'players', window.currentUser.uid));
+                    playerData = playerSnap.exists() ? playerSnap.data() : {};
+                    playerName = playerData.name || window.currentUser.displayName || playerName;
+                } catch (err) {
+                    console.warn('No se pudo obtener datos del jugador autenticado:', err);
+                }
+            } else {
+                // Si no hay usuario autenticado, tomar nombre desde el input del setup si existe
+                const inputName = document.getElementById('player-name')?.value?.trim();
+                if (inputName) playerName = inputName;
+            }
 
             await setDoc(roomRef, {
                 id: roomId,
-                player1: window.currentUser.uid,
-                player1Name: playerData.name || window.currentUser.displayName || 'Jugador 1',
-                player1Data: {
+                player1: window.currentUser ? window.currentUser.uid : null,
+                player1Name: playerName,
+                player1Data: window.currentUser ? {
                     uid: window.currentUser.uid,
                     name: playerData.name,
                     email: playerData.email,
                     gamesPlayed: playerData.gamesPlayed || 0,
                     gamesWon: playerData.gamesWon || 0,
                     created: serverTimestamp()
-                },
+                } : null,
                 status: 'waiting',
                 created: serverTimestamp(),
                 board: ['', '', '', '', '', '', '', '', ''],
