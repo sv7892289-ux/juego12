@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jhamil Vargas Arcienega">
+    <meta name="keywords" content="Tres en Raya, Tic Tac Toe, Juego, HTML, CSS, JavaScript, Firebase, Registro, Inicio de Sesión, Estadísticas, Multiplayer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo de juegos Tres en Raya">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎮</text></svg>">
+    <title>Tres en Raya - Catálogo</title>
+    
+    <!-- Firebase SDK (v8.10.0) - Versión compatible con sintaxis antigua -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header aria-label="Encabezado principal">
+            <h1>🎮 Tres en Raya</h1>
+            <p class="subtitle">¡Bienvenido, <span id="welcome-player">Jugador</span>!</p>
+        </header>
+
+        <main aria-label="Contenido principal del catálogo">
+            <!-- Estadísticas del Usuario -->
+            <div class="user-stats-card">
+                <h3>📊 Mis Estadísticas</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-icon">🎮</span>
+                        <span class="stat-label">Partidas Jugadas</span>
+                        <span class="stat-value" id="games-played">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">🏆</span>
+                        <span class="stat-label">Victorias</span>
+                        <span class="stat-value" id="games-won">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">📈</span>
+                        <span class="stat-label">Porcentaje</span>
+                        <span class="stat-value" id="win-percentage">0%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon">❌⭕</div>
+                <h2>Tres en Raya</h2>
+                <p>Juega contra la CPU en 3 niveles de dificultad o contra un amigo.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <span class="feature-icon">🧠</span>
+                        <span>IA Inteligente</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🎚️</span>
+                        <span>3 Niveles</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📊</span>
+                        <span>Estadísticas</span>
+                    </div>
+                </div>
+
+                <a href="game-setup.html" class="launch-btn">
+                    <span class="btn-icon">▶️</span>
+                    <span class="btn-text">Iniciar Juego</span>
+                </a>
+
+                <button type="button" id="leaderboard-btn" class="launch-btn btn-yellow">
+                    <span class="btn-icon">🏆</span>
+                    <span class="btn-text">Tabla de Líderes</span>
+                </button>
+
+                <button type="button" id="logout-btn" class="launch-btn btn-red">
+                    <span class="btn-icon">🚪</span>
+                    <span class="btn-text">Cerrar Sesión</span>
+                </button>
+
+                <a href="index.html" class="launch-btn btn-gray">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">Volver al Panel</span>
+                </a>
+
+                <div class="instructions">
+                    <p><strong>Características:</strong> Juego en línea, estadísticas guardadas, múltiples modos</p>
+                    <p>Todas tus partidas se guardan automáticamente en la nube.</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Desarrollado con ❤️ | Haz clic en "Iniciar Juego" para comenzar</p>
+        </footer>
+    </div>
+
+    <!-- Panel de Tabla de Líderes -->
+    <div id="leaderboard-screen" class="container" hidden role="region" aria-label="Pantalla de tabla de líderes">
+        <header aria-label="Encabezado de tabla de líderes">
+            <h1>🏆 Tabla de Líderes</h1>
+            <p class="subtitle">Los mejores jugadores de Tres en Raya</p>
+        </header>
+
+        <main aria-label="Contenido de tabla de líderes">
+            <div class="leaderboard-card">
+                <div class="leaderboard-tabs">
+                    <button type="button" class="tab-btn active" data-tab="wins">Más Victorias</button>
+                    <button type="button" class="tab-btn" data-tab="games">Más Partidas</button>
+                    <button type="button" class="tab-btn" data-tab="percentage">Mejor Porcentaje</button>
+                </div>
+                
+                <div id="leaderboard-list" class="leaderboard-list">
+                    <!-- Los datos se cargarán dinámicamente -->
+                </div>
+
+                <button type="button" id="close-leaderboard" class="launch-btn btn-gray-leaderboard">
+                    <span class="btn-icon">🔙</span>
+                    <span class="btn-text">Volver al Juego</span>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

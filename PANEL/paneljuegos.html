@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel de juegos retro">
+    <meta name="keywords" content="HTML, CSS, JavaScript, juegos, retro">
+    <meta name="author" content="Jhamil Vargas Arcienega">
+    <title>PANEL DE JUEGOS RETRO</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 PANEL DE JUEGOS RETRO</h1>
+        <p class="lead">Bienvenido. Elige un juego para comenzar. ¡Diviértete!</p>
+
+        <!-- Catálogo de juegos -->
+        <section id="catalog" class="games-grid">
+            <!-- Tres en Raya - ACTIVO -->
+            <article class="game-card" data-game="tres-en-raya" aria-label="Tres en raya">
+                <span class="pill">Nuevo</span>
+                <div class="thumb">
+                    <img src="img/tresenraya.jpg" alt="Tres en Raya">
+                </div>
+                <h3>Tres en Raya</h3>
+                <p>El clásico X y O. Juega contra la IA o con un amigo.</p>
+            </article>
+
+            <!-- Snake - DESACTIVADO -->
+            <article class="game-card disabled" aria-disabled="true" aria-label="Snake (Próximamente)">
+                <span class="pill">Próximamente</span>
+                <h3>Snake</h3>
+                <p>Guía a la serpiente y come sin chocar.</p>
+            </article>
+
+            <!-- Memoria - DESACTIVADO -->
+            <article class="game-card disabled" aria-disabled="true" aria-label="Memoria (Próximamente)">
+                <span class="pill">Próximamente</span>
+                <h3>Memoria</h3>
+                <p>Encuentra las parejas de cartas.</p>
+            </article>
+
+            <!-- Ajedrez - ACTIVO (puedes enlazarlo después) -->
+            <article class="game-card" data-game="ajedrez" aria-label="Ajedrez">
+                <div class="thumb">
+                    <img src="img/ajedrez.jpg" alt="Ajedrez">
+                </div>
+                <h3>Ajedrez</h3>
+                <p>Próximamente disponible.</p>
+            </article>
+
+            <!-- Ludo - ACTIVO (puedes enlazarlo después) -->
+            <article class="game-card" data-game="ludo" aria-label="Ludo">
+                <div class="thumb">
+                    <img src="img/ludo.jpg" alt="Ludo">
+                </div>
+                <h3>Ludo</h3>
+                <p>Próximamente disponible.</p>
+            </article>
+        </section>
+
+        <!-- Área del juego (oculta por defecto) -->
+        <section id="game-area" hidden>
+            <div class="toolbar">
+                <button id="back" class="btn" aria-label="Volver al catálogo">← Volver</button>
+                <div id="game-title"></div>
+                <div class="status" id="status"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        (function () {
+            const catalog = document.getElementById('catalog');
+            const gameArea = document.getElementById('game-area');
+            const backBtn = document.getElementById('back');
+            const title = document.getElementById('game-title');
+            const statusEl = document.getElementById('status');
+
+            function showCatalog() {
+                gameArea.hidden = true;
+                catalog.hidden = false;
+                title.textContent = '';
+                statusEl.textContent = '';
+            }
+
+            // Botón "Volver"
+            if (backBtn) {
+                backBtn.addEventListener('click', showCatalog);
+            }
+
+            // Manejar clics en el catálogo
+            catalog.addEventListener('click', (ev) => {
+                const card = ev.target.closest('.game-card');
+                if (!card || card.classList.contains('disabled')) return;
+
+                const gameKey = card.getAttribute('data-game');
+                if (!gameKey) return;
+
+                // ✅ REDIRECCIÓN A Tres en Raya
+                if (gameKey === 'tres-en-raya') {
+                    window.location.href = '../TRESENRAYA/catalog.html';
+                    return;
+                }
+
+                // Para otros juegos
+                if (gameKey === 'ajedrez' || gameKey === 'ludo') {
+                    alert("Este juego estará disponible pronto.");
+                    return;
+                }
+            });
+
+            // Estado inicial
+            showCatalog();
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jhamil Vargas Arcienega">
+    <meta name="keywords" content="Tres en Raya, Tic Tac Toe, Juego, HTML, CSS, JavaScript, Firebase, Registro, Inicio de Sesión, Estadísticas, Multiplayer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Configuración del juego Tres en Raya">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎮</text></svg>">
+    <title>Tres en Raya - Configuración del Juego</title>
+    
+        <!-- Firebase modular se inicializa desde el módulo `game.js` (cargado como type="module"). -->
+</head>
+<body>
+    <div class="game-container">
+        <header>
+            <a href="catalog.html" class="back-btn">← Volver</a>
+            <a href="index.html" class="back-btn back-btn-margin">🏠 Panel</a>
+            <h1 id="game-title">Tres en Raya</h1>
+        </header>
+
+        <!-- Pantalla de Configuración -->
+        <div id="setup-screen" class="setup-screen">
+            <form id="setup-form">
+                <div class="form-group">
+                    <label for="player-name">Nombre del Jugador:</label>
+                    <input type="text" id="player-name" placeholder="Ingresa tu nombre" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Tu símbolo:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="symbol" value="X" checked> X</label>
+                        <label><input type="radio" name="symbol" value="O"> O</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Modo de juego:</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="mode" value="cpu" checked> 🖥️ vs CPU</label>
+                        <label><input type="radio" name="mode" value="2p"> 👥 2 Jugadores</label>
+                        <label><input type="radio" name="mode" value="online"> 🌐 Juego en Línea</label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="difficulty-group">
+                    <label>Dificultad:</label>
+                    <select id="difficulty">
+                        <option value="easy">🟢 Principiante</option>
+                        <option value="medium">🟡 Intermedio</option>
+                        <option value="hard">🔴 Avanzado</option>
+                    </select>
+                </div>
+
+                <!-- Sección para Juego en Línea -->
+                <div class="form-group" id="online-group" style="display: block;">
+                    <div class="online-info">
+                        <h4>🌐 Juego en Línea</h4>
+                        <p>Se creará un enlace que podrás compartir con tu amigo para jugar juntos en tiempo real.</p>
+                        <div class="features">
+                            <span class="feature">✅ Tiempo real</span>
+                            <span class="feature">✅ Enlace compartible</span>
+                            <span class="feature">✅ Estadísticas guardadas</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Opciones para crear o unirse a sala -->
+                    <div class="online-options">
+                        <div class="radio-group">
+                            <label><input type="radio" name="online-action" value="create" checked> 🆕 Crear Nueva Sala</label>
+                            <label><input type="radio" name="online-action" value="join"> 🔗 Unirse a Sala</label>
+                        </div>
+                    </div>
+
+                    <!-- Campo para ID de sala (visible cuando se selecciona "Unirse") -->
+                    <div class="form-group" id="room-id-group" style="display: none;">
+                        <label for="room-id">ID de la Sala:</label>
+                        <div class="room-id-input">
+                            <input type="text" id="room-id" placeholder="Ingresa el ID de la sala" maxlength="6">
+                            <button type="button" id="generate-room-id" class="btn-generate">🎲 Generar</button>
+                        </div>
+                        <small class="room-id-help">El ID debe tener 6 caracteres alfanuméricos</small>
+
+                        <!-- Elementos esperados por game.js: input con id 'room-id-input' y botón 'join-room-btn' -->
+                        <div style="margin-top:8px; display:flex; gap:8px;">
+                            <input type="text" id="room-id-input" placeholder="Pega o escribe el ID de sala aquí" maxlength="6">
+                            <button type="button" id="join-room-btn" class="btn-join">🔗 Unirse</button>
+                        </div>
+                    </div>
+
+                    <!-- Información de la sala creada -->
+                    <div class="form-group" id="room-info-group" style="display: block;">
+                        <label>Información de la Sala:</label>
+                        <div class="room-info">
+                            <div class="room-id-display">
+                                <strong>ID de la Sala:</strong> <span id="display-room-id">-</span>
+                                <button type="button" id="copy-room-id" class="btn-copy">📋 Copiar</button>
+                            </div><!--  -->
+                            <div class="room-link">
+                                <strong>Enlace para compartir:</strong>
+                                <div class="link-container">
+                                    <input type="text" id="room-link" readonly>
+                                    <button type="button" id="copy-room-link" class="btn-copy">📋 Copiar</button>
+                                </div>
+                            </div>
+                            <div class="room-status">
+                                <span class="status-indicator">⏳ Esperando jugador...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="start-game-btn" class="start-btn">Iniciar Juego</button>
+            </form>
+        </div>
+
+        <!-- Tablero del Juego -->
+        <div id="game-tres-en-raya" class="board" hidden>
+            <div class="status" id="status">Tu turno (X)</div>
+            <div class="grid">
+                <button type="button" class="cell" data-index="0"></button>
+                <button type="button" class="cell" data-index="1"></button>
+                <button type="button" class="cell" data-index="2"></button>
+                <button type="button" class="cell" data-index="3"></button>
+                <button type="button" class="cell" data-index="4"></button>
+                <button type="button" class="cell" data-index="5"></button>
+                <button type="button" class="cell" data-index="6"></button>
+                <button type="button" class="cell" data-index="7"></button>
+                <button type="button" class="cell" data-index="8"></button>
+            </div>
+            <div class="stats" id="stats">Estadísticas: 0V | 0E | 0D</div>
+            
+            <!-- Barra de mensajería instantánea (solo visible en modo en línea) -->
+            <div id="chat-container" class="chat-container" style="display: none;">
+                <div class="chat-header">
+                    <h4>💬 Chat en Tiempo Real</h4>
+                    <button type="button" id="toggle-chat" class="btn-toggle-chat">−</button>
+                </div>
+                <div id="chat-messages" class="chat-messages">
+                    <div class="chat-message system">
+                        <span class="message-time">00:00</span>
+                        <span class="message-text">¡Bienvenido al chat! Puedes comunicarte con tu oponente aquí.</span>
+                    </div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Escribe tu mensaje..." maxlength="100">
+                    <button type="button" id="send-message" class="btn-send">📤</button>
+                </div>
+            </div>
+            
+            <!-- Información de la sala (para mostrar durante el juego) -->
+            <div id="room-info" class="room-info-display" style="display: none;">
+                <!-- Se llenará dinámicamente con información de la sala -->
+            </div>
+            
+            <div class="game-controls">
+                <button type="button" id="reset" class="btn-reset">Reiniciar</button>
+                <button type="button" id="home" class="btn-home">Menú</button>
+                <button type="button" id="toggle-chat-btn" class="btn-chat chat-hidden">💬 Chat</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jhamil Vargas Arcienega">
+    <meta name="keywords" content="Tres en Raya, Tic Tac Toe, Juego, HTML, CSS, JavaScript, Firebase, Registro, Inicio de Sesión, Estadísticas, Multiplayer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inicio de sesión para el juego Tres en Raya">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎮</text></svg>">
+    <title>Tres en Raya - Iniciar Sesión</title>
+    
+        <!-- Centralized Firebase initialization -->
+        <script type="module" src="firebase-init.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Tres en Raya</h1>
+            <p class="subtitle">Inicia sesión para continuar jugando</p>
+        </header>
+
+        <main>
+            <div class="registration-card">
+                <div class="game-icon">❌⭕</div>
+                <h2>Iniciar Sesión</h2>
+                <p>Ingresa tus credenciales para acceder a tu cuenta.</p>
+                
+                <form id="player-login-form" class="registration-form">
+                    <div class="form-group">
+                        <label for="login-email">Correo Electrónico:</label>
+                        <input type="email" id="login-email" placeholder="tu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password">Contraseña:</label>
+                        <input type="password" id="login-password" placeholder="Tu contraseña" required>
+                    </div>
+
+                    <button type="submit" class="register-btn">
+                        <span class="btn-icon">🔑</span>
+                        <span class="btn-text">Iniciar Sesión</span>
+                    </button>
+                </form>
+
+                <div id="login-message" class="message"></div>
+
+                <div class="login-link">
+                    <p>¿No tienes cuenta? <a href="registration.html">Registrarse</a></p>
+                </div>
+
+                <a href="index.html" class="launch-btn btn-gray">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">Volver al Panel</span>
+                </a>
+            </div>
+        </main>
+
+        <footer>
+            <p>Desarrollado con ❤️ | Inicia sesión para continuar</p>
+        </footer>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script>
+        // Manejar el formulario de login
+        document.getElementById('player-login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            const result = await window.handleLogin(email, password);
+            
+            if (result.success) {
+                alert(result.message);
+                window.location.href = 'catalog.html';
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+</body>
+</html>

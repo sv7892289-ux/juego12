@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jhamil Vargas Arcienega">
+    <meta name="keywords" content="Tres en Raya, Tic Tac Toe, Juego, HTML, CSS, JavaScript, Firebase, Registro, Inicio de Sesión, Estadísticas, Multiplayer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel principal del juego Tres en Raya">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎮</text></svg>">
+    <title>Tres en Raya - Panel Principal</title>
+    
+    <!-- Firebase SDK (v8.10.0) - Versión compatible con sintaxis antigua -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Tres en Raya</h1>
+            <p class="subtitle">¡Bienvenido al mejor juego de Tres en Raya!</p>
+        </header>
+
+        <main>
+            <div class="game-card">
+                <div class="game-icon">❌⭕</div>
+                <h2>¡Comienza a Jugar!</h2>
+                <p>Disfruta del clásico juego de Tres en Raya con múltiples modos de juego y estadísticas en tiempo real.</p>
+                
+                <div class="features">
+                    <div class="feature">
+                        <span class="feature-icon">🧠</span>
+                        <span>IA Inteligente</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">👥</span>
+                        <span>Multijugador</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">🌐</span>
+                        <span>Juego en Línea</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">📊</span>
+                        <span>Estadísticas</span>
+                    </div>
+                </div>
+
+                <div class="game-options">
+                    <a href="registration.html" class="launch-btn btn-green">
+                        <span class="btn-icon">📝</span>
+                        <span class="btn-text">Registrarse</span>
+                    </a>
+
+                    <a href="login.html" class="launch-btn btn-blue">
+                        <span class="btn-icon">🔑</span>
+                        <span class="btn-text">Iniciar Sesión</span>
+                    </a>
+
+                    <a href="catalog.html" class="launch-btn btn-purple">
+                        <span class="btn-icon">🎮</span>
+                        <span class="btn-text">Jugar como Invitado</span>
+                    </a>
+                </div>
+
+                <div class="instructions">
+                    <p><strong>Características del juego:</strong></p>
+                    <ul>
+                        <li>🎯 3 niveles de dificultad contra la CPU</li>
+                        <li>👥 Modo de 2 jugadores local</li>
+                        <li>🌐 Juego en línea con salas compartibles</li>
+                        <li>📊 Estadísticas guardadas en la nube</li>
+                        <li>🏆 Tabla de líderes global</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Desarrollado con ❤️ | Elige una opción para comenzar a jugar</p>
+        </footer>
+    </div>
+
+    <script>
+        // Mostrar opciones apropiadas según el estado de autenticación
+        document.addEventListener('DOMContentLoaded', () => {
+            // Esperar a que Firebase se inicialice desde game.js
+            setTimeout(() => {
+                if (window.firebase && window.auth) {
+                    // Verificar si el usuario ya está autenticado
+                    window.auth.onAuthStateChanged((user) => {
+                        if (user) {
+                            // Si el usuario está autenticado, mostrar mensaje y opción para ir al catálogo
+                            const subtitle = document.querySelector('.subtitle');
+                            if (subtitle) {
+                                subtitle.innerHTML = '¡Bienvenido de vuelta! Ya tienes una sesión activa.';
+                            }
+                            
+                            // Agregar botón para ir al catálogo
+                            const gameOptions = document.querySelector('.game-options');
+                            if (gameOptions) {
+                                gameOptions.innerHTML = `
+                                    <a href="catalog.html" class="launch-btn" style="background-color: #28a745;">
+                                        <span class="btn-icon">🎮</span>
+                                        <span class="btn-text">Continuar Jugando</span>
+                                    </a>
+                                    <button onclick="logoutAndShowOptions()" class="launch-btn" style="background-color: #dc3545;">
+                                        <span class="btn-icon">🚪</span>
+                                        <span class="btn-text">Cerrar Sesión</span>
+                                    </button>
+                                `;
+                            }
+                        }
+                    });
+                }
+            }, 100);
+        });
+
+        // Función para cerrar sesión y mostrar opciones de registro
+        function logoutAndShowOptions() {
+            if (window.auth) {
+                window.auth.signOut().then(() => {
+                    // Recargar la página para mostrar las opciones de registro
+                    window.location.reload();
+                }).catch(error => {
+                    console.error('Error al cerrar sesión:', error);
+                    alert('Error al cerrar sesión. Recarga la página manualmente.');
+                });
+            }
+        }
+    </script>
+    <script src="game.js"></script>
+</body>
+</html>

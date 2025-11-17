@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jhamil Vargas Arcienega">
+    <meta name="keywords" content="Tres en Raya, Tic Tac Toe, Juego, HTML, CSS, JavaScript, Firebase, Registro, Inicio de Sesión, Estadísticas, Multiplayer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Registro de usuario para el juego Tres en Raya">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='80' font-size='80'>🎮</text></svg>">
+    <title>Tres en Raya - Registro</title>
+    
+        <!-- Centralized Firebase initialization -->
+        <script type="module" src="firebase-init.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Tres en Raya</h1>
+            <p class="subtitle">Regístrate para comenzar a jugar</p>
+        </header>
+
+        <main>
+            <div class="registration-card">
+                <div class="game-icon">❌⭕</div>
+                <h2>Registro de Jugador</h2>
+                <p>Ingresa tus datos para comenzar a jugar y guardar tus estadísticas.</p>
+                
+                <form id="player-registration-form" class="registration-form">
+                    <div class="form-group">
+                        <label for="player-name-reg">Nombre del Jugador:</label>
+                        <input type="text" id="player-name-reg" placeholder="Ingresa tu nombre completo" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="player-email">Correo Electrónico:</label>
+                        <input type="email" id="player-email" placeholder="tu@email.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="player-password">Contraseña:</label>
+                        <input type="password" id="player-password" placeholder="Mínimo 6 caracteres" required>
+                    </div>
+
+                    <button type="submit" class="register-btn">
+                        <span class="btn-icon">📝</span>
+                        <span class="btn-text">Registrarse y Jugar</span>
+                    </button>
+                </form>
+
+                <div id="registration-message" class="message"></div>
+
+                <div class="login-link">
+                    <p>¿Ya tienes cuenta? <a href="login.html">Iniciar Sesión</a></p>
+                </div>
+
+                <a href="index.html" class="launch-btn btn-gray">
+                    <span class="btn-icon">🏠</span>
+                    <span class="btn-text">Volver al Panel</span>
+                </a>
+            </div>
+        </main>
+
+        <footer>
+            <p>Desarrollado con ❤️ | Registra tu cuenta para comenzar</p>
+        </footer>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script>
+        // Manejar el formulario de registro
+        document.getElementById('player-registration-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('player-name-reg').value;
+            const email = document.getElementById('player-email').value;
+            const password = document.getElementById('player-password').value;
+            
+            const result = await window.handleRegistration(name, email, password);
+            
+            if (result.success) {
+                alert(result.message);
+                window.location.href = 'catalog.html';
+            } else {
+                alert(result.message);
+            }
+        });
+    </script>
+</body>
+</html>
